@@ -1,0 +1,88 @@
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Acortador de URL</title>
+        <link rel="icon" href="../img/favicon.ico" sizes="any">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=6Ldl_skpAAAAAKlNIm-opcHgUjNHKeuOLFbA3NZC"></script>
+    
+        <style>
+            body {
+                background-image: radial-gradient(ellipse 80% 80% at 50% -20%, #7877c64d, #fff0);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 l6 offset-m2 offset-l3">
+                    <h3>Acortador de URL 🔗</h3>
+                    <div class="row">
+                        <form class="col s12" id="urlForm">
+                            <div class="input-field col s12">
+                                <input placeholder="Ejemplo: https://google.es" type="text" name="long_url" required>
+                            </div>
+                            <div class="input-field col s12">
+                                <input placeholder="Google" type="text" name="alias" required>
+                            </div>
+                            <div class="input-field col s12">
+                                <input placeholder="Contraseña" type="password" name="auth_pass" required><br>
+                            </div>
+                            <div class="col s12">
+                                <button id="submitBtn" class="btn waves-effect waves-light" type="button">Acortar</button>
+                            </div>
+                            <div id="message"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var submitBtn = document.getElementById('submitBtn');
+                submitBtn.addEventListener('click', function () {
+                    var longUrl = document.getElementsByName('long_url')[0].value;
+                    var alias = document.getElementsByName('alias')[0].value;
+                    var authPass = document.getElementsByName('auth_pass')[0].value;
+        
+                    if (longUrl && alias && authPass) {
+                        grecaptcha.ready(function () {
+                            grecaptcha.execute('6Ldl_skpAAAAAKlNIm-opcHgUjNHKeuOLFbA3NZC', {action: 'submit'}).then(function (token) {
+                                var recaptchaResponse = $('#recaptchaResponse');
+                                if (recaptchaResponse.length) {
+                                    recaptchaResponse.val(token);
+                                } else {
+                                    $('#urlForm').prepend('<input type="hidden" id="recaptchaResponse" name="recaptcha_response" value="' + token + '">');
+                                }
+                                $.ajax({
+                                    url: 'shorten.php',
+                                    type: 'post',
+                                    data: $('#urlForm').serialize(),
+                                    dataType: 'json',
+                                    cache: false,
+                                    success: function (response) {
+                                        if (response.error) {
+                                            $('#message').text(response.message);
+                                        } else {
+                                            $('#message').text(response.message);
+                                            $('#urlForm').trigger("reset");
+                                        }
+                                    },
+                                    error: function () {
+                                        $('#message').text('Hubo un error al procesar tu solicitud.');
+                                    }
+                                });
+                            });
+                        });
+                    } else {
+                        // Al menos un campo está vacío, mostrar un mensaje de error
+                        document.getElementById('message').textContent = 'Todos los campos son obligatorios.';
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
+
