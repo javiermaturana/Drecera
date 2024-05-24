@@ -50,24 +50,6 @@
                     var alias = document.getElementsByName('alias')[0].value;
                     var authPass = document.getElementsByName('auth_pass')[0].value;
 
-                    $.ajax({
-                        url: 'get_aliases.php',
-                        type: 'get',
-                        dataType: 'json',
-                        success: function (response) {
-                            var aliasList = document.createElement('ul');
-                            response.forEach(function(alias) {
-                                var listItem = document.createElement('li');
-                                listItem.textContent = alias;
-                                aliasList.appendChild(listItem);
-                            });
-                            document.getElementById('submitBtn').after(aliasList);
-                        },
-                        error: function () {
-                            console.log('Hubo un error al obtener los alias.');
-                        }
-                    });
-        
                     if (longUrl && alias && authPass) {
                         grecaptcha.ready(function () {
                             grecaptcha.execute('6Ldl_skpAAAAAKlNIm-opcHgUjNHKeuOLFbA3NZC', {action: 'submit'}).then(function (token) {
