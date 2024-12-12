@@ -16,5 +16,5 @@ jobs:
           username: ${{ secrets.HOSTINGER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/u435110291/public_html/Dracera
+            cd /home/u435110291/public_html/Drecera
             git pull origin main
