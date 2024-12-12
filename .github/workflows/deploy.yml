@@ -15,7 +15,7 @@ jobs:
       with:
         host: ${{ secrets.HOSTINGER_HOST }}
         username: ${{ secrets.HOSTINGER_USER }}
-        password: ${{ secrets.HOSTINGER_PASS }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /home/u435110291/public_html/Dracera
           git pull origin main
