@@ -21,6 +21,4 @@ jobs:
       - name: Deploy to Hostinger
         run: |
           ssh -o StrictHostKeyChecking=no -p 65002 u435110291@154.56.33.165 "
-          cd ~/domains/jmaturana.link/public_html/Drecera &&
-          git pull origin main
-          "
+          cd /home/u435110291/domains/jmaturana.link/public_html/Drecera  && git pull origin main"
