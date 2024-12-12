@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../env.php';
 
 if (ENVIRONMENT === 'local') {
-    require_once __DIR__ . '/../config.php'; // Configuración local
+    require_once __DIR__ . '/../config.php';
 }
 
 $servername = getenv('DB_SERVERNAME');
@@ -15,7 +15,5 @@ $conn = new mysqli($servername, $dbUser, $dbPass, $dbName);
 
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
-}else{
-    echo "Conexión exitosa";
 }
 ?>
