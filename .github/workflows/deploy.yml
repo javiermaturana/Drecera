@@ -1,18 +1,26 @@
 name: Deploy to Hostinger
+
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Deploy to Hostinger
-        uses: appleboy/ssh-action@master
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: ${{ secrets.HOSTINGER_HOST }}
-          username: ${{ secrets.HOSTINGER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/u435110291/public_html/Drecera
-            git pull origin main
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Hostinger
+        run: |
+          ssh -o StrictHostKeyChecking=no -p 65002 u435110291@154.56.33.165 "
+          cd ~/domains/jmaturana.link/public_html/Drecera &&
+          git pull origin main
+          "
